@@ -1,11 +1,15 @@
 import React from 'react';
+
+// Import custom styled components
 import { 
   AppWrapper, 
   InputCard, 
   InputWrapper,
+  CheckboxWrapper,
   Button 
 } from './components/styles';
 
+// Import all relevent state and event handlers for the form
 import { useForm } from './utils/useForm';
 
 function App() {
@@ -82,6 +86,15 @@ function App() {
             onChange={handleChange}
           />
         </InputWrapper>
+        <CheckboxWrapper>
+          <input
+            type='checkbox'
+            name='sameStartAndEnd'
+            checked={formData.sameStartAndEnd}
+            onChange={handleChange}
+          />
+          <label>Use the same starting and end location</label>
+        </CheckboxWrapper>
         <Button onClick={handleSubmit}>Plan my route!</Button>
       </InputCard>
     </AppWrapper>

@@ -25,6 +25,7 @@ export const InputCard = styled.div`
     align-items: center;
     background: rgb(47,160,193);
     background: linear-gradient(180deg, rgba(47,160,193,1) 0%, rgba(18,130,162,1) 100%);
+    color: white;
 `;
 
 export const InputWrapper = styled.div`
@@ -42,9 +43,13 @@ export const InputWrapper = styled.div`
             box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
         }
     }
-    label {
-        color: white;
-    }
+`;
+
+export const CheckboxWrapper = styled.div`
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    
 `;
 
 export const OutputCard = styled.div`

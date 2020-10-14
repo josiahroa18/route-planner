@@ -9,16 +9,26 @@ export const useForm = () => {
         desiredStopFour: '',
         desiredStopFive: '',
         desiredStopSix: '',
-        endLocation: ''
+        endLocation: '',
+        sameStartAndEnd: true
     }
 
     const [formData, setFormData] = useState(initialData);
 
     const handleChange = (e) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value
-        })
+        // If the user has decided to use the same starting end ending location, update both accordingly
+        if(formData.sameStartAndEnd && (e.target.name === 'startingLocation' || e.target.name === 'endLocation')){
+            setFormData({
+                ...formData,
+                startingLocation: e.target.value,
+                endLocation: e.target.value
+            })
+        } else {
+            setFormData({
+                ...formData,
+                [e.target.name]: e.target.type === 'checkbox' ? e.target.checked: e.target.value
+            });
+        }
     }
 
     const handleSubmit = (e) => {
