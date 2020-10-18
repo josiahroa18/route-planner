@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 const theme = {
     colors: {
@@ -16,7 +16,7 @@ export const AppWrapper = styled.div`
     display: flex;
 `;
 
-export const InputCard = styled.div`
+export const SideBarWrapper = styled.div`
     width: 350px;
     height: 100%;
     padding: 0 30px;
@@ -66,8 +66,28 @@ export const Button = styled.div`
     cursor: pointer;
     background-color: ${theme.colors.green};
     transition: .5s ease;
+    color: ${theme.colors.midBlue};
     &:hover{
         background-color: ${theme.colors.lightGreen};
         transition: .5s ease;
     }
+`;
+
+const spin = keyframes`
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+`;
+
+export const Spinner = styled.div`
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid ${theme.colors.midBlue};
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    animation: ${spin} 2s linear infinite;
+    margin-left: 10px;
 `;

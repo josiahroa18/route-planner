@@ -39,20 +39,28 @@ export const useForm = () => {
     // Use geocoding to validate address? 
     const handleSubmit = (e) => {
         e.preventDefault();
-        setLoading(true);
+        if(!loading){
+            setLoading(true);
+            // const { sameStartAndEnd, endLocation, ...rest } = formData;
+            // axios.post(`${SERVER_URL}/create-route`, rest)
+            // .then(res => {
+            //     console.log(res.data);
+            //     setLoading(false);
+            // })
+            // .catch(err => {
+            //     console.log(err);
+            //     setLoading(false);
+            // })
 
-        const { sameStartAndEnd, endLocation, ...rest } = formData;
-        axios.post(`${SERVER_URL}/create-route`, rest)
-        .then(res => {
-            console.log(res.data);
-            setLoading(false);
-        })
-        .catch(err => {
-            console.log(err);
-            setLoading(false);
-        })
+            setTimeout(() => {
+                console.log(formData);
+                setLoading(false);
+            }, 1000);
+            
 
-        // setFormData(initialData);
+            // setFormData(initialData);
+        }
+        
     }
 
     return {
