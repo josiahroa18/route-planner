@@ -19,6 +19,7 @@ export const useForm = () => {
     const [ formData, setFormData ] = useState(initialData);
     const [ loading, setLoading ] = useState(false);
 
+    // TODO: Add autocomplete address feature
     const handleChange = (e) => {
         // If the user has decided to use the same starting end ending location, update both accordingly
         if(formData.sameStartAndEnd && (e.target.name === 'startingLocation' || e.target.name === 'endLocation')){
@@ -35,6 +36,7 @@ export const useForm = () => {
         }
     }
 
+    // Use geocoding to validate address? 
     const handleSubmit = (e) => {
         e.preventDefault();
         setLoading(true);
