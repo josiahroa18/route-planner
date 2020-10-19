@@ -1,24 +1,31 @@
 import React from 'react';
-import { useForm } from '../hooks/useForm';
 
 import { 
     SideBarWrapper, 
+    ErrorWrapper,
     InputWrapper,
     CheckboxWrapper,
     Button,
     Spinner
 } from './styles';
 
-export default () => {
+export default props => {
     const {
         formData, 
+        clearForm,
         handleChange,
         handleSubmit,
-        loading
-    } = useForm();
+        loading,
+        errors
+    } = props;
 
     return (
         <SideBarWrapper>
+            <ErrorWrapper>
+                {Object.values(errors).map(error => {
+                    return error ? <p key={error}>{error}</p> : null
+                })}
+            </ErrorWrapper>
             <InputWrapper>
                 <label>Starting Location</label>
                 <input
@@ -92,10 +99,16 @@ export default () => {
                 />
                 <label>Use the same starting and end location</label>
             </CheckboxWrapper>
-            <Button onClick={handleSubmit}>
-                Plan my route!
-                {loading && <Spinner/>}                
-            </Button>
+            <div style={{ marginTop: '20px', width: '100%' }}>
+                <Button onClick={clearForm}>
+                    Clear Form
+                </Button>
+                <Button onClick={handleSubmit}>
+                    Plan my route!
+                    {loading && <Spinner/>}                
+                </Button>
+            </div>
+            
         </SideBarWrapper>
     );
 }

@@ -15,13 +15,15 @@ const PORT = process.env.PORT || 5000;
 const { GOOGLE_API_KEY } = process.env;
 
 server.post('/create-route', (req, res) => {
+    const BASE_URL = 'https://maps.googleapis.com/maps/api/distancematrix/json';
+
     // Format address to acceptable query param for google's API url string
     const locations = addressesToParam(req.body);
 
     // Make a SINGLE request to the google API
-    axios.get(`https://maps.googleapis.com/maps/api/distancematrix/json?origins=${locations}&destinations=${locations}&key=${GOOGLE_API_KEY}`)
+    axios.get(`${BASE_URL}?origins=${locations}&destinations=${locations}&key=${GOOGLE_API_KEY}`)
     .then(response => {
-        res.status(200).send(graphDriver(response.data));
+        res.status(200).json(graphDriver(response.data));
     })
     .catch(err => {
         console.log(err);

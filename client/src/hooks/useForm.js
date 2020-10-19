@@ -1,26 +1,50 @@
 import { useState } from 'react';
 import axios from 'axios';
 
+import { validateForm } from '../utils/validateForm';
+
+const initialFormData = {
+    startingLocation: '',
+    desiredStopOne: '',
+    desiredStopTwo: '',
+    desiredStopThree: '',
+    desiredStopFour: '',
+    desiredStopFive: '',
+    desiredStopSix: '',
+    endLocation: '',
+    sameStartAndEnd: true
+}
+
+const initialErrors = {
+    start: '',
+    end: '',
+    stops: '',
+    server: ''
+}
+
 export const useForm = () => {
-    const initialData = {
-        startingLocation: '19163 Cottonwood Dr, Parker, CO',
-        desiredStopOne: '11603 Hotsprings Dr, Parker, CO',
-        desiredStopTwo: 'Boulder, CO',
-        desiredStopThree: 'Denver, CO',
-        desiredStopFour: 'Golden, CO',
-        // desiredStopFive: '',
-        // desiredStopSix: '',
-        endLocation: '19163 Cottonwood Dr, Parker, CO',
-        sameStartAndEnd: true
-    }
+    const [ formData, setFormData ] = useState(initialFormData);
+    const [ loading, setLoading] = useState(false);
+    const [ route, setRoute ] = useState([]);
+    const [ errors, setErrors ] = useState(initialErrors);
 
     const SERVER_URL = 'http://localhost:5000';
 
-    const [ formData, setFormData ] = useState(initialData);
-    const [ loading, setLoading ] = useState(false);
+    const clearForm = () => {
+        setFormData(initialFormData);
+    }
 
-    // TODO: Add autocomplete address feature
+    const handleErrors = async (key, errorMessage) => {
+        setErrors(prevErrors => ({
+            ...prevErrors,
+            [key]: errorMessage
+        }));
+    }
+
     const handleChange = (e) => {
+        // Reset errors
+        setErrors(initialErrors);
+
         // If the user has decided to use the same starting end ending location, update both accordingly
         if(formData.sameStartAndEnd && (e.target.name === 'startingLocation' || e.target.name === 'endLocation')){
             setFormData({
@@ -36,38 +60,46 @@ export const useForm = () => {
         }
     }
 
-    // Use geocoding to validate address? 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        if(!loading){
+
+        // Error handling
+        const { sameStartAndEnd, ...locations } = formData;
+        const valid = await validateForm(locations, handleErrors);
+
+        if(!loading && valid){            
             setLoading(true);
-            // const { sameStartAndEnd, endLocation, ...rest } = formData;
-            // axios.post(`${SERVER_URL}/create-route`, rest)
-            // .then(res => {
-            //     console.log(res.data);
-            //     setLoading(false);
-            // })
-            // .catch(err => {
-            //     console.log(err);
-            //     setLoading(false);
-            // })
+            const { sameStartAndEnd, endLocation, ...rest } = formData;
 
-            setTimeout(() => {
-                console.log(formData);
+            axios.post(`${SERVER_URL}/create-route`, rest)
+            .then(res => {
+                // Structure route array
+                if(formData.sameStartAndEnd){
+                    setRoute([...res.data, res.data[0]]);
+                } else {
+                    setRoute(res.data);
+                }
+                setErrors(initialErrors);
                 setLoading(false);
-            }, 1000);
-            
-
-            // setFormData(initialData);
-        }
-        
+            })
+            .catch(err => {
+                setErrors(prevErrors => ({
+                    ...prevErrors,
+                    server: err.message
+                }))
+                setLoading(false);
+            })  
+        } 
     }
 
     return {
         formData, 
+        clearForm,
         handleChange,
         handleSubmit,
-        loading
+        loading,
+        route,
+        errors
     };
 }
 
