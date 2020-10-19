@@ -3,6 +3,8 @@ My solution to the PRC take home coding challenge.
 
 ## Running Application Locally
 Both the client and server should be running at the same time to get a fully functional application.
+1. Clone this repository.
+2. Go to the project folder and follow the steps below.
 
 ### Client (Starting from the root directory)
 1. `cd client`
