@@ -27,7 +27,7 @@ export const ResultWrapper = styled.div`
 
 export const SideBarWrapper = styled.div`
     width: 350px;
-    height: 100%;
+    height: calc(100% - 30px);
     padding: 0 30px;
     padding-top: 30px;
     display: flex;
